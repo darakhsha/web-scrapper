@@ -1,0 +1,57 @@
+import requests
+from requests.structures import CaseInsensitiveDict
+from bs4 import BeautifulSoup
+
+url = "https://www.osmania.ac.in/res07/20220230.jsp"
+
+headers = CaseInsensitiveDict()
+headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+data = "mbstatus=SEARCH&htno=160820733021&Submit.x=42&Submit.y=13"
+
+
+resp = requests.post(url, headers=headers, data=data)
+
+print(resp.text)
+soup = BeautifulSoup(resp.text,'html.parser')               # Converting into a BeautifulSoup Object for html parsing
+
+name_table = soup.find(id = 'AutoNumber3')                  # Fetching student name                      
+name_rows = name_table.find_all('tr') 
+stu_name_row = name_rows[2].find_all('td')                                           
+stu_name_value = stu_name_row[1].get_text()
+print(stu_name_row)
+print(stu_name_value)
+ 
+ticket_row = name_rows[1].find_all('td')                    #Fetching hall ticket number
+hall_ticket = ticket_row[0].get_text()
+hall_ticket_value = ticket_row[1].get_text()
+print(hall_ticket)
+print(hall_ticket_value)
+
+gender_row = name_rows[1].find_all('td')                    #fetching gender name
+gender_name = gender_row[2].get_text()
+gender_name_value =gender_row[3].get_text()
+print(gender_name)
+print(gender_name_value)
+ 
+father_row = name_rows[2].find_all('td')                    #Fetching Father name
+hall_ticket = ticket_row[0].get_text()
+father_name = father_row[2].get_text()
+father_name_value  = father_row[3].get_text()
+print(father_name)
+print(father_name_value)
+
+course_row = name_rows[3].find_all('td')                    #Fetching course name
+course_name = course_row[0].get_text()
+course__name__value = course_row[1].get_text()
+print(course_name)
+print(course__name__value )
+
+ # Fetching final result and SGPA
+result_table = soup.find( id = 'AutoNumber5')                                    # Find the table with final result
+result_rows = result_table.find_all('tr')
+result_row = result_rows[2].find_all('td')
+sgpa = result_row[1].get_text()
+print(result_row)
+print(sgpa)
+
